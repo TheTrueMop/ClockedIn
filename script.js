@@ -13,7 +13,7 @@ startStopBtn.addEventListener('click', function(event) {
         clearInterval(interval);
         startStopBtn.textContent = 'Start Coding';
         const endTime = Date.now();
-        saveSession(startTime, endTime);
+        saveSession(startTime, endTime, totalTime);
     } else {
         startTime = Date.now();
         interval = setInterval(updateTimeDisplay, 1000);
@@ -51,6 +51,7 @@ function saveSession(startTime, endTime) {
 
     // Save to local storage
     localStorage.setItem('timeData', JSON.stringify(data));
+    updateTable();
 };
 
 
@@ -75,3 +76,45 @@ for (const date in sessions) {
 }
 
 document.body.appendChild(table);
+
+//Another copy paste
+
+function updateTable() {
+    const sessions = JSON.parse(localStorage.getItem('timeData') || '{}');
+    const timeTableBody = document.getElementById('timeTableBody');
+    timeTableBody.innerHTML = ''; // Clear existing rows
+  
+    let weeklyTotal = 0;
+  
+    // Loop through the last 7 days
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      const dateString = date.toISOString().split('T')[0];
+  
+      const row = document.createElement('tr');
+      const dateCell = document.createElement('td');
+      dateCell.textContent = dateString;
+      const timeCell = document.createElement('td');
+  
+      if (sessions[dateString]) {
+        const timeInSeconds = sessions[dateString].totalTime / 1000;
+        timeCell.textContent = timeInSeconds;
+        weeklyTotal += timeInSeconds;
+      } else {
+        timeCell.textContent = '0';
+      }
+  
+      row.appendChild(dateCell);
+      row.appendChild(timeCell);
+      timeTableBody.appendChild(row);
+    }
+  
+    // Update the weekly total
+    document.getElementById('weeklyTotal').textContent = weeklyTotal;
+  }
+  
+  // Call this function whenever you want to update the table, e.g., after saving a session
+  updateTable();
+
+//organize code is the next step here

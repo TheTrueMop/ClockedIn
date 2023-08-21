@@ -29,3 +29,19 @@ button {
     margin-top: 20px;
     font-size: 1.5rem;
 }
+
+#timeTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  #timeTable th, #timeTable td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  #timeTable tfoot {
+    font-weight: bold;
+  }
+  
